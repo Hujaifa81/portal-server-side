@@ -85,6 +85,13 @@ async function run() {
       const result = await favoriteMovieCollection.deleteOne({ _id: new ObjectId(id) });
       res.send(result)
     })
+    app.delete('/delete-favoriteMovie-with-email-movieId', async (req, res) => {
+
+      const { email, movieId } = req.query;
+     
+      const result = await favoriteMovieCollection.deleteOne({ email, movieId });
+      res.send(result)
+    })
     
 
 
