@@ -92,7 +92,27 @@ async function run() {
       const result = await favoriteMovieCollection.deleteOne({ email, movieId });
       res.send(result)
     })
-    
+    app.put('/update/:id', async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedMovie = {
+        $set: {
+          title: data.title,
+          genres: data.genres,
+          year: data.year,
+          rating: data.rating,
+          duration: parseFloat(data.duration),
+          summary: data.summary,
+          poster: data.poster,
+          email: data.email
+        }
+      }
+      const result = await movieCollection.updateOne(filter, updatedMovie, options);
+      res.send(result)
+    })
+
 
 
     
