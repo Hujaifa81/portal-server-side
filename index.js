@@ -1,7 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
+const cors = require('cors');
+const express = require('express');
+
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
 
 
 const port = process.env.PORT || 5000;
@@ -21,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     // // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     // console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -62,12 +64,13 @@ async function run() {
       const updatedMovie = {
         $set: {
           title: data.title,
-          genres: data.genres.map(g => g.value),
-          year: data.year.value,
+          genres: data.genres,
+          year: data.year,
           rating: data.rating,
           duration: parseFloat(data.duration),
           summary: data.summary,
-          poster: data.poster
+          poster: data.poster,
+          email: data.email
         }
       }
       const result = await movieCollection.updateOne(filter, updatedMovie, options);
@@ -117,7 +120,7 @@ async function run() {
 }
 run().catch(console.dir);
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.send('Hello');
 })
 
 app.listen(port, () => {
